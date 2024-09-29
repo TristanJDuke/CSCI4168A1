@@ -103,12 +103,13 @@ public class PlayerControl : MonoBehaviour
     private void Run()
     {
         moveSpeed = runSpeed;
-        anim.SetFloat("Speed",1,.1f,Time.deltaTime);
+        anim.SetFloat("Speed",0.7f,.1f,Time.deltaTime);
 
     }
 
     private void Jump()
     {
         _velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
+        anim.SetTrigger("didJump");
     }
 }
