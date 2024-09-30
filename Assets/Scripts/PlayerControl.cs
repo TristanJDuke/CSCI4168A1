@@ -22,9 +22,17 @@ public class PlayerControl : MonoBehaviour
     
     //jumping
     [SerializeField] private float jumpHeight;
+    
+    //wall jump mechanic
+    [SerializeField] private bool canWallJump = false;
+    [SerializeField] private bool isTouchingWall;
+    [SerializeField] private float wallCheckDistance;
+    [SerializeField] private LayerMask wallMask;
+    
     //References
     private CharacterController _characterController;
     private Animator anim;
+
 
     private void Start()
     {
@@ -39,8 +47,9 @@ public class PlayerControl : MonoBehaviour
 
     private void Move()
     {
-        isGrounded = Physics.CheckSphere(transform.position, groundCheckDistance, groundMask);
-
+        var transformPosition = transform.position;
+        isGrounded = Physics.CheckSphere(transformPosition, groundCheckDistance, groundMask);
+        isTouchingWall = Physics.CheckSphere(transformPosition, wallCheckDistance, wallMask);
         if (isGrounded && _velocity.y < 0)
         {
             _velocity.y = -2f;
@@ -53,7 +62,7 @@ public class PlayerControl : MonoBehaviour
         _moveDirection = new Vector3(moveX, 0, moveZ); //Tank controls??
         _moveDirection = transform.TransformDirection(_moveDirection);
         
-        if (isGrounded)
+        if ((isGrounded) || (isTouchingWall && canWallJump))
         {
             if (_moveDirection != Vector3.zero && !Input.GetKey(KeyCode.LeftShift))
             {
@@ -76,7 +85,7 @@ public class PlayerControl : MonoBehaviour
             {
                 Jump();
             }
-        }
+        } 
         else
         {
             _moveDirection *= moveSpeed; //in air movement
@@ -111,5 +120,14 @@ public class PlayerControl : MonoBehaviour
     {
         _velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
         anim.SetTrigger("didJump");
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Pickup"))
+        {
+            canWallJump = true;
+            Destroy(other.gameObject);
+        }
     }
 }
