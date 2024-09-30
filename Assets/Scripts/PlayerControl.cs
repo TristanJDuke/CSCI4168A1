@@ -119,7 +119,14 @@ public class PlayerControl : MonoBehaviour
     private void Jump()
     {
         _velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
-        anim.SetTrigger("didJump");
+        if (isTouchingWall && canWallJump)
+        {
+            anim.SetTrigger("didWallJump");
+        }
+        else
+        {
+            anim.SetTrigger("didJump");
+        }
     }
     
     private void OnTriggerEnter(Collider other)
