@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,24 +7,50 @@ using UnityEngine.UI;
 
 public class PlayerCharacter : MonoBehaviour
 {
-    [SerializeField] private float maxHealth = 100;
-    private HealthBar healthBar;
-    public static PlayerCharacter player { get; private set; }
-    public float currentHealth { get; private set; }
-    public Slider healthSlider;
+    [SerializeField] private int maxHealth = 100;
+    private int currentHealth;
+
+    private GameLogic spawner;  // Reference to the PlayerSpawner
+
+    
     void Start()
     {
-        player = this;
-        healthBar = PlayerCharacter.player.healthSlider.GetComponent<HealthBar>();
-        healthBar.SetMaxHealth(maxHealth);
+        currentHealth = maxHealth;
+        spawner = FindObjectOfType<GameLogic>();
+    }
+    
+    private void Update()
+    {
+        if (transform.position.y < -10f)//fell to death
+        {
+            Die();
+        }
+    }
+    public void SpawnPlayer()
+    {
         currentHealth = maxHealth;
     }
-    public void TakeDamage(float damage) {
-        currentHealth -= damage;
-        healthBar.SetHealth(currentHealth);
-        if (currentHealth <= 0) {
-            Destroy(this.gameObject);
+    
+    public void TakeDamage(int damage) {
+        currentHealth -= damage;//take damage
+        if (currentHealth <= 0)
+        {
+            Die();
         }
-
     }
+    public void Heal(int damage)
+    {
+        currentHealth += damage;//heal damage
+        if (currentHealth > 100)
+        {
+            currentHealth = 100; //no overheal
+        }
+    }
+    public void Die()
+    {
+        Destroy(gameObject);
+        spawner.SpawnPlayer();  // Tell the spawner to respawn a new player
+    }
+    
+    
 }
