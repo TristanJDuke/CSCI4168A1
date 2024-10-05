@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+
 using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
@@ -8,6 +10,7 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
     
+
     //movement variable
     private Vector3 _moveDirection;    //directional vector
     
@@ -24,20 +27,24 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float jumpHeight;
     
     //wall jump mechanic
-    [SerializeField] private bool canWallJump = false;
-    [SerializeField] private bool isTouchingWall;
-    [SerializeField] private float wallCheckDistance;
+    private bool canWallJump = false;
+    private bool isTouchingWall;
+    private float wallCheckDistance = 1;
     [SerializeField] private LayerMask wallMask;
     
     //References
     private CharacterController _characterController;
-    private Animator anim;
+    private Animator _anim;
+    private GameLogic gameLogic;
+
 
 
     private void Start()
     {
         _characterController = GetComponent<CharacterController>(); //attach controller to char
-        anim = GetComponentInChildren<Animator>();
+        _anim = GetComponentInChildren<Animator>();
+        gameLogic = FindObjectOfType<GameLogic>();
+
     }
 
     private void Update()
@@ -99,20 +106,20 @@ public class PlayerControl : MonoBehaviour
 
     private void Idle()
     {
-        anim.SetFloat("Speed",0,.1f,Time.deltaTime);
+        _anim.SetFloat("Speed",0,.1f,Time.deltaTime);
     }
 
     private void Walk()
     {
         moveSpeed = walkSpeed;
-        anim.SetFloat("Speed",0.5f,.1f,Time.deltaTime);
+        _anim.SetFloat("Speed",0.5f,.1f,Time.deltaTime);
 
     }
 
     private void Run()
     {
         moveSpeed = runSpeed;
-        anim.SetFloat("Speed",0.7f,.1f,Time.deltaTime);
+        _anim.SetFloat("Speed",0.7f,.1f,Time.deltaTime);
 
     }
 
@@ -121,20 +128,23 @@ public class PlayerControl : MonoBehaviour
         _velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
         if (isTouchingWall && canWallJump)
         {
-            anim.SetTrigger("didWallJump");
+            _anim.SetTrigger("didWallJump");
         }
         else
         {
-            anim.SetTrigger("didJump");
+            _anim.SetTrigger("didJump");
         }
     }
-    
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Pickup"))
         {
             canWallJump = true;
             Destroy(other.gameObject);
+        }
+        if (other.gameObject.CompareTag("EndZone"))
+        {
+            gameLogic.LevelCompletion(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }

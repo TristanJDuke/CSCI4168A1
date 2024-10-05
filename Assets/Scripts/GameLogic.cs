@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -5,21 +6,31 @@ using UnityEngine;
 
 public class GameLogic : MonoBehaviour
 {
-    public GameObject playerPrefab;  // The player's prefab
-    public Transform spawnPoint;     // The spawn point where the player will respawn
-
+    
+    public GameObject playerPrefab;
+    public Transform spawnPoint;
+    private int _scene;
     private void Start()
     {
-        SpawnPlayer();  // Spawn the player at the start of the game
+        SpawnPlayer();
+        _scene = SceneManager.GetActiveScene().buildIndex;
     }
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            LevelCompletion(_scene);
+        }
+    }
+
     public void SpawnPlayer()
     {
-        Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);  // Spawn a new player
+        Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
     }
-    void onLevelCompletion()
+    public void LevelCompletion(int sceneIndex)
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(sceneIndex + 1);
     }
     
 }
