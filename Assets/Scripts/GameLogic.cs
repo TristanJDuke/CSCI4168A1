@@ -12,7 +12,6 @@ public class GameLogic : MonoBehaviour
     private int _scene;
     private void Start()
     {
-        SpawnPlayer();
         _scene = SceneManager.GetActiveScene().buildIndex;
     }
 
@@ -23,7 +22,7 @@ public class GameLogic : MonoBehaviour
             LevelCompletion(_scene);
         }
     }
-
+    
     public void SpawnPlayer()
     {
         Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
