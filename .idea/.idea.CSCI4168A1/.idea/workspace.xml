@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e71480ef-a308-4451-a357-eff475f7e766" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CSCI4168A1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CSCI4168A1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/EnemyJet.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/EnemyJet.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/spawnPoint.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/spawnPoint.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/spawnPoint.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/spawnPoint.prefab.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/LevelOne.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/LevelOne.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/EnemyAI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/EnemyAI.cs" afterDir="false" />
-    </list>
+    <list default="true" id="e71480ef-a308-4451-a357-eff475f7e766" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -122,7 +115,7 @@
       <workItem from="1727891509454" duration="3176000" />
       <workItem from="1728066268999" duration="2039000" />
       <workItem from="1728153672106" duration="3614000" />
-      <workItem from="1728313358210" duration="9067000" />
+      <workItem from="1728313358210" duration="9270000" />
     </task>
     <servers />
   </component>
