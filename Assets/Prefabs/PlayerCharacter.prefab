@@ -2333,6 +2333,7 @@ MonoBehaviour:
   wallMask:
     serializedVersion: 2
     m_Bits: 128
+  hintText: {fileID: 0}
 --- !u!114 &8846203401974346328
 MonoBehaviour:
   m_ObjectHideFlags: 0

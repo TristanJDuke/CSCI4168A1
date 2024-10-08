@@ -7,11 +7,11 @@ public class CameraControl : MonoBehaviour
     [SerializeField] private float mouseSensitivity;
 
     private Transform parent;
-
+    
     private void Start()
     {
-        parent= transform.parent;
-        Cursor.lockState = CursorLockMode.Locked;
+        parent = transform.parent;
+        Cursor.lockState = CursorLockMode.Locked; //camera controls stay in screen
     }
 
     private void Update()
@@ -22,6 +22,6 @@ public class CameraControl : MonoBehaviour
     private void Rotate()
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        parent.Rotate(Vector3.up, mouseX);
+        parent.Rotate(Vector3.up, mouseX); //move char and camera with mouse
     }
 }

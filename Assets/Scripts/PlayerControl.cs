@@ -1,12 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine.SceneManagement;
 
 using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
-    public float moveSpeed; //left public for possible slowing by enemies
+    //player controller vars
+    public float moveSpeed; 
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
     
@@ -35,15 +35,16 @@ public class PlayerControl : MonoBehaviour
     //References
     private CharacterController _characterController;
     private Animator _anim;
-    private GameLogic gameLogic;
+    private GameLogic _gameLogic;
+    public TextMeshPro hintText;
 
 
 
     private void Start()
     {
-        _characterController = GetComponent<CharacterController>(); //attach controller to char
-        _anim = GetComponentInChildren<Animator>();
-        gameLogic = FindObjectOfType<GameLogic>();
+        _characterController = GetComponent<CharacterController>();
+        _anim = GetComponentInChildren<Animator>(); 
+        _gameLogic = FindObjectOfType<GameLogic>();
 
     }
 
@@ -62,13 +63,14 @@ public class PlayerControl : MonoBehaviour
             _velocity.y = -2f;
             
         }
-        
-        float moveZ = Input.GetAxis("Vertical"); //take input
-        float moveX = Input.GetAxis("Horizontal"); // left/right for strafing
-
-        _moveDirection = new Vector3(moveX, 0, moveZ); //Tank controls??
+        //set inputs to directions
+        float moveZ = Input.GetAxis("Vertical");
+        float moveX = Input.GetAxis("Horizontal");
+        //set the x z and direction
+        _moveDirection = new Vector3(moveX, 0, moveZ);
         _moveDirection = transform.TransformDirection(_moveDirection);
         
+        //kinda messy but I like how the OR is used so I can have this work for before and after unlocking walljump
         if ((isGrounded) || (isTouchingWall && canWallJump))
         {
             if (_moveDirection != Vector3.zero && !Input.GetKey(KeyCode.LeftShift))
@@ -90,6 +92,7 @@ public class PlayerControl : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                //guess
                 Jump();
             }
         } 
@@ -97,13 +100,13 @@ public class PlayerControl : MonoBehaviour
         {
             _moveDirection *= moveSpeed; //in air movement
         }
-        
+        //actually implementing motion
         _characterController.Move(_moveDirection * Time.deltaTime);
         
         _velocity.y += gravity * Time.deltaTime;
         _characterController.Move(_velocity * Time.deltaTime);
     }
-
+    //the following functions were mainly for the animator
     private void Idle()
     {
         _anim.SetFloat("Speed",0,.1f,Time.deltaTime);
@@ -122,7 +125,7 @@ public class PlayerControl : MonoBehaviour
         _anim.SetFloat("Speed",0.7f,.1f,Time.deltaTime);
 
     }
-
+    //jumping math and walljump animations covered
     private void Jump()
     {
         _velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
@@ -135,16 +138,18 @@ public class PlayerControl : MonoBehaviour
             _anim.SetTrigger("didJump");
         }
     }
+    //used for touching the important stuff
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Pickup"))
         {
             canWallJump = true;
             Destroy(other.gameObject);
+            Destroy(hintText); //I made this in the event that you need miss going left
         }
         if (other.gameObject.CompareTag("EndZone"))
         {
-            gameLogic.LevelCompletion(SceneManager.GetActiveScene().buildIndex);
+            _gameLogic.LevelCompletion(SceneManager.GetActiveScene().buildIndex); //distinguishing between items
         }
     }
 }

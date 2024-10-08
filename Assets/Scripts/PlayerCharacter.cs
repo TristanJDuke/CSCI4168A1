@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class PlayerCharacter : MonoBehaviour
 {
-    private GameLogic gameLogic;  // Reference to the PlayerCharacter script
-
-    
+    //reference
+    private GameLogic _gameLogic;
     void Start()
     {
-        gameLogic = FindObjectOfType<GameLogic>();
+        _gameLogic = FindObjectOfType<GameLogic>();
 
     }
     
@@ -22,8 +16,10 @@ public class PlayerCharacter : MonoBehaviour
     }
     public void Die()
     {
-        Debug.Log("Player died!");
+        //Debug.Log("Player died!");
+        //hes dead so kill him
         Destroy(gameObject);
-        gameLogic.SpawnPlayer();
+        //hes got infinite lives so bring him back
+        _gameLogic.SpawnPlayer();
     }
 }

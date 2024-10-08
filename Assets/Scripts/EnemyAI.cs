@@ -1,67 +1,62 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
+    //variables for enemies
     public float damageAmount = 10;
-    
-    public Transform player;
     public float movementSpeed = 2f;
     public float detectionRange = 10f;
     public float rotationSpeed = 5f;
+    
+    //references
+    public Transform player;
+    
+    //direction assist for enemy
     public Vector3 playerChest = new Vector3(0, 1, 0);
-
-    void Start()
-    {
-        
-    }
+    
 
     void Update()
     {
-        // Dynamically find the player if the player is not referenced
+        //actively look for players because sometimes they respawn
         if (player == null)
         {
             GameObject playerObject = GameObject.FindWithTag("Player");
+            //I couldn't find a better way to do this but unity hates my solution
             if (playerObject != null)
             {
-                player = playerObject.transform;  // Get the player's transform
+                player = playerObject.transform;//find players location
             }
         }
-
-        // If player is found and within detection range, move towards them
+        //when player is alive
         if (player != null)
         {
             float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
             if (distanceToPlayer <= detectionRange)
             {
-                // Calculate direction to the player's center (with offset)
+                //simple enemy moves towards player system
                 Vector3 playerPositionWithOffset = player.position + playerChest;
                 Vector3 direction = (playerPositionWithOffset - transform.position).normalized;
 
-                // Move towards the player
+                //actual movement part
                 transform.position = Vector3.MoveTowards(transform.position, playerPositionWithOffset, movementSpeed * Time.deltaTime);
 
-                // Rotate towards the player
-                Quaternion targetRotation = Quaternion.LookRotation(direction);  // Get the rotation towards the player
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);  // Smoothly rotate towards the player
+                //added so the model rotates and points towards the player
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
             }
         }
     }
-    
+    //System for hurting the player when they bump into the enemies
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Collided with player!");
+            //Debug.Log("Collided with player!");
             PlayerHealth playerHealth = other.gameObject.GetComponent<PlayerHealth>();
             if (playerHealth != null)
             {
-                playerHealth.TakeDamage(damageAmount);
+                playerHealth.TakeDamage(damageAmount); //player health script referenced here because it's oopy
             }
         }
     }

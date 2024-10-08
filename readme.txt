@@ -1,0 +1,3 @@
+I added a wall jump mechanic that is required to progress through to the next level in which there is a boss fight.
+The use of exclusively avoidable enemies and additional movement mechanics makes for a game in which the player must avoid being hurt instead of one in which the player can use attacks to destroy the enemies.
+I felt this fit more with my style of making a platforming game about progressing as fast as possible.

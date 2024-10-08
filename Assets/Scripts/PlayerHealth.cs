@@ -1,38 +1,40 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
     public float health; //health vars
     public float maxHealth;
+    
+    //References
     public Image healthBar;
-    private PlayerCharacter playerCharacter;  // Reference to the PlayerCharacter script
+    private PlayerCharacter _playerCharacter;
 
     private void Start()
     {
+        //initialize max health and attach to player
         maxHealth = health;
-        playerCharacter = GetComponent<PlayerCharacter>();
+        _playerCharacter = GetComponent<PlayerCharacter>();
     }
 
     private void Update()
     {
-        
+        //health bar image math
         healthBar.fillAmount = Mathf.Clamp(health / maxHealth ,0,1);
         
+        //falling out of the map
         if (transform.position.y < -10f)//fell to death
         {
-            playerCharacter.Die();
+            _playerCharacter.Die();
 
         }
     }
+    //damage function to be oopy again
     public void TakeDamage(float damageAmount)
     {
         health -= damageAmount;
         if (health <= 0)
         {
-            playerCharacter.Die();
+            _playerCharacter.Die();
         }
     }
     
